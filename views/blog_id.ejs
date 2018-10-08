@@ -138,7 +138,15 @@
                         </form>
                     </div>
                 </div>
-                
+                <%blogs.comments.forEach((e) =>{ %>
+                 <div class="media mt-4">
+                            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                            <div class="media-body">
+                                <h5 class="mt-0"><%= e.author %></h5>
+                                <%= e.text %>
+                            </div>
+                        </div>
+                <% }) %>
                 <!-- Comment with nested comments -->
                 <div class="media mb-4">
                     <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
