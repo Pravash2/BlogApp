@@ -3,14 +3,14 @@ const router = express();
 const bodyparser = require('body-parser');
 const mongoose = require("mongoose");
 const methodOverride = require('method-override');
-const Url=require('../config/keys')
-const seedDB=require('../seeds')
+const Url = require('../config/keys')
+const seedDB = require('../seeds')
 router.use(methodOverride("_method"))
 mongoose.connect(Url.url);
 router.use(bodyparser.urlencoded({
     extended: true
 }));
-const blogs=require('../models/campground');
+const blogs = require('../models/campground');
 seedDB();
 
 router.get('/', (req, res) => {
@@ -18,7 +18,8 @@ router.get('/', (req, res) => {
     blogs.find({}, (err, blog) => {
         if (err) {
             console.log(err);
-        } else {
+        }
+        else {
             console.log(blog);
             res.render('home', {
                 blogs: blog
@@ -43,7 +44,8 @@ router.post('/new', (req, res) => {
     }, (err, blog) => {
         if (err) {
             console.log(err)
-        } else {
+        }
+        else {
             console.log(blog);
             res.redirect('/blogs')
         }
@@ -52,13 +54,14 @@ router.post('/new', (req, res) => {
 router.get('/id/:id', (req, res) => {
     'use strict';
     console.log(req.params.id)
-    blogs.findById(req.params.id).populate("comments").exec(function(err, blog){
-        if(err){
+    blogs.findById(req.params.id).populate("comments").exec(function (err, blog) {
+        if (err) {
             console.log(err);
-        } else {
-            console.log(blog.title)
+        }
+        else {
+            console.log(blog)
             //render show template with that campground
-            res.render("blog_id", {blogs: blog});
+            res.render("blog_id", { blogs: blog });
         }
     });
 })
@@ -67,7 +70,8 @@ router.get('/edit/:id', (req, res) => {
     blogs.findById(req.params.id, (err, blog) => {
         if (err) {
             console.log(err);
-        } else {
+        }
+        else {
             res.render('edit', {
                 blogs: blog
             });
@@ -77,23 +81,24 @@ router.get('/edit/:id', (req, res) => {
 router.put("/edit/:id", (req, res) => {
     'use strict';
     console.log(req.body.description)
-    blogs.findByIdAndUpdate(req.params.id,{title:req.body.title,description:req.body.description}, function (err, blog) {
+    blogs.findByIdAndUpdate(req.params.id, { title: req.body.title, description: req.body.description }, function (err, blog) {
         if (err) {
             console.log(err);
-        } else {
+        }
+        else {
             const showUrl = "/blogs/id/" + blog._id;
             res.redirect(showUrl)
         }
     });
 });
 
-router.delete('/:id/delete',(req,res)=>{
+router.delete('/:id/delete', (req, res) => {
     "use strict"
-    blogs.findById(req.params.Id,(err,blog)=>{
-        if(err){
+    blogs.findById(req.params.Id, (err, blog) => {
+        if (err) {
             console.log(err);
         }
-        else{
+        else {
             blog.remove().remove();
             console.log(blog)
         }
